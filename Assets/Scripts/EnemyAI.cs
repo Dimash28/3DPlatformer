@@ -3,6 +3,8 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private Transform originPoint;
+    [SerializeField] private BoxCollider groundCheck;
+    [SerializeField] private LayerMask groundLayer;
 
     [SerializeField] private float health;
 
@@ -82,9 +84,18 @@ public class EnemyAI : MonoBehaviour
                     isMoving = true;
                 }
             }
-            else 
+            else
             {
-                HandleMovementToRandomPoint();
+                if (IsGroundAhead())
+                {
+                    HandleMovementToRandomPoint();
+                }
+                else
+                {
+                    currentSpeed = 0f;
+                    PickRandomPointToGo();
+                    HandleMovementToRandomPoint();
+                }
                 waitingTimer = 0f;
             }
         }
@@ -108,7 +119,6 @@ public class EnemyAI : MonoBehaviour
 
         transform.position += moveDir * currentSpeed * Time.deltaTime;
 
-
         if (isMoving && moveDir != Vector3.zero)
         {
             Vector3 positionToLookAt = new Vector3(moveDir.x, 0f, moveDir.z);
@@ -127,6 +137,18 @@ public class EnemyAI : MonoBehaviour
     {
         Collider[] players = Physics.OverlapSphere(transform.position, detectionRange, playerLayerMask);
         return players.Length > 0;
+    }
+
+    private bool IsGroundAhead() 
+    {
+        Vector3 center = groundCheck.transform.position + groundCheck.center;
+        Vector3 halfExtents = groundCheck.size * 0.5f;
+
+        Collider[] hits = Physics.OverlapBox(center, halfExtents, groundCheck.transform.rotation, groundLayer);
+
+        Debug.Log("Ground Ahead: " + (hits.Length > 0));
+
+        return hits.Length > 0;
     }
 
     private void Die()

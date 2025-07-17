@@ -41,6 +41,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 201520018653583806}
     m_Modifications:
     - target: {fileID: -5610472135930248577, guid: 78d7e3a9ba1efb74694a3db97ef46539, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5610472135930248577, guid: 78d7e3a9ba1efb74694a3db97ef46539, type: 3}
       propertyPath: playerLayerMask.m_Bits
       value: 256
       objectReference: {fileID: 0}
@@ -244,7 +248,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8102225092841090272, guid: 78d7e3a9ba1efb74694a3db97ef46539, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8102225092841090272, guid: 78d7e3a9ba1efb74694a3db97ef46539, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

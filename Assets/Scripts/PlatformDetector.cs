@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlatformDetector : MonoBehaviour
 {
-    [SerializeField] private Player player;
     public MovingPlatform CurrentMovingPlatform { get; private set; }
     public FragilePlatform CurrentFragilePlatform { get; private set; }
 
