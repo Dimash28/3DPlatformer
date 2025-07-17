@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -85,6 +86,9 @@ public class Player : MonoBehaviour
     private Vector3 currentMoveDirection;
 
     private RaycastHit hitSlope;
+
+    private List<KeySO> goldenKeyList = new List<KeySO>();
+    private List<KeySO> silverKeyList = new List<KeySO>();
 
     private void Awake()
     {
@@ -465,6 +469,22 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.TryGetComponent<Key>(out Key key)) 
+        {
+            if (key.GetKeySO().keyName == "Golden Key") 
+            {
+                goldenKeyList.Add(key.GetKeySO());
+                key.DestroyKeyObject();
+                Debug.Log("Golden Key Added");
+            }
+
+            if (key.GetKeySO().keyName == "Silver Key") 
+            {
+                silverKeyList.Add(key.GetKeySO());
+                key.DestroyKeyObject();
+            }
+        }
+
         if (other.TryGetComponent<SkillSphere>(out SkillSphere skillSphere))
         {
             OnSkillPickedUp?.Invoke(this, EventArgs.Empty);
@@ -559,5 +579,33 @@ public class Player : MonoBehaviour
     public int GetSkillAmount() 
     {
         return skillAmount;
+    }
+
+    public bool HasRightKeySO(KeySO keySO) 
+    {
+        if (keySO.keyName == "Golden Key" && goldenKeyList.Count > 0)
+        {
+            return true;
+        }
+        else if (keySO.keyName == "Silver Key" && goldenKeyList.Count > 0)
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
+
+    public void RemoveKeyFromInventory(KeySO keySO) 
+    {
+        if (keySO.keyName == "Golden Key")
+        {
+            goldenKeyList.Remove(keySO);
+        }
+        else if (keySO.keyName == "Silver Key") 
+        {
+            silverKeyList.Remove(keySO);
+        }
     }
 }

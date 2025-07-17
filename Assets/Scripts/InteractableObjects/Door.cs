@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class Door : MonoBehaviour, IInteractable
 {
+    [SerializeField] private Transform openPivot;
+    [SerializeField] private KeySO keySO;
+
+
     private bool isOpened = false;
     public void Interact(Player player)
     {
         if (isOpened) return;
 
-        isOpened = true;
-        StartCoroutine(OpenDoor());
-        Debug.Log("Door opened");
+        if (player.HasRightKeySO(keySO))
+        {
+            isOpened = true;
+            StartCoroutine(OpenDoor());
+            Debug.Log("Door opened");
+            player.RemoveKeyFromInventory(keySO);
+        }
+        else 
+        {
+            Debug.Log("You don't have right key!");
+        }
     }
 
     private IEnumerator OpenDoor()
