@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    [SerializeField] private Player player;
+
     [SerializeField] private Transform originPoint;
     [SerializeField] private BoxCollider groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -53,11 +55,25 @@ public class EnemyAI : MonoBehaviour
                 HandleRoaming();
                 break;
             case EnemyState.Chasing:
+                HandleChasing();
                 break;
             case EnemyState.Attacking:
                 break;
 
         }
+    }
+
+    private void HandleChasing() 
+    {
+        if (!IsPlayerInRange()) 
+        { 
+            currentState = EnemyState.Roaming;
+            return;
+        }
+
+        Vector3 moveDir = (player.transform.position - transform.position).normalized;
+
+        HandleMovement(moveDir);
     }
 
     private void HandleRoaming()
@@ -117,6 +133,11 @@ public class EnemyAI : MonoBehaviour
     {
         Vector3 moveDir = (randomPoint - transform.position).normalized;
 
+        HandleMovement(moveDir);
+    }
+
+    private void HandleMovement(Vector3 moveDir) 
+    {
         transform.position += moveDir * currentSpeed * Time.deltaTime;
 
         if (isMoving && moveDir != Vector3.zero)

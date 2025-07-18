@@ -41,6 +41,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 201520018653583806}
     m_Modifications:
     - target: {fileID: -5610472135930248577, guid: 78d7e3a9ba1efb74694a3db97ef46539, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1716792825980796234, guid: 4d7175f1ab9a29c4596f88048bab5673, type: 3}
+    - target: {fileID: -5610472135930248577, guid: 78d7e3a9ba1efb74694a3db97ef46539, type: 3}
+      propertyPath: originPoint
+      value: 
+      objectReference: {fileID: 201520018653583806}
+    - target: {fileID: -5610472135930248577, guid: 78d7e3a9ba1efb74694a3db97ef46539, type: 3}
       propertyPath: groundLayer.m_Bits
       value: 0
       objectReference: {fileID: 0}

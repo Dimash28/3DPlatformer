@@ -601,6 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1cb301ff0ef81447b574fc0e747c4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   originPoint: {fileID: 0}
   groundCheck: {fileID: 5438879346534384932}
   groundLayer:
