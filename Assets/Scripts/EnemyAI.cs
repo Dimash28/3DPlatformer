@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] private Player player;
+    [SerializeField] private GameObject player;
 
     [SerializeField] private Transform originPoint;
     [SerializeField] private BoxCollider groundCheck;
@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float attackCooldown;
     [SerializeField] private float damage;
     [SerializeField] private float waitingTime;
+    [SerializeField] private float playerLoseTime;
 
     [SerializeField] private LayerMask playerLayerMask;
 
@@ -29,6 +30,7 @@ public class EnemyAI : MonoBehaviour
     private bool isMoving;
     private float waitingTimer;
     private float currentSpeed;
+    private float playerLoseTimer;
 
     private EnemyState currentState;
 
@@ -59,27 +61,50 @@ public class EnemyAI : MonoBehaviour
                 break;
             case EnemyState.Attacking:
                 break;
-
         }
     }
 
     private void HandleChasing() 
     {
-        if (!IsPlayerInRange()) 
-        { 
-            currentState = EnemyState.Roaming;
-            return;
+        if (!IsPlayerInRange())
+        {
+            if (!IsGroundAhead())
+            {
+                currentState = EnemyState.Roaming;
+                return;
+            }
+
+            playerLoseTimer += Time.deltaTime;
+            if (playerLoseTimer >= playerLoseTime) 
+            {
+                currentState = EnemyState.Roaming;
+                playerLoseTimer = 0f;
+                return;
+            }
         }
-
-        Vector3 moveDir = (player.transform.position - transform.position).normalized;
-
-        HandleMovement(moveDir);
+        else
+        {
+            if (IsGroundAhead())
+            {
+                Vector3 moveDir = (player.transform.position - transform.position).normalized;
+                HandleMovement(moveDir);
+            }
+            else
+            {
+                currentState = EnemyState.Roaming;
+                currentSpeed = 0f;
+                PickRandomPointToGo();
+                HandleMovementToRandomPoint();
+            }
+        }
     }
 
     private void HandleRoaming()
     {
         AdjustSpeedAcceleration();
+
         float distance = Vector3.Distance(transform.position, randomPoint);
+
         if (IsPlayerInRange())
         {
             currentState = EnemyState.Chasing;
@@ -138,7 +163,7 @@ public class EnemyAI : MonoBehaviour
 
     private void HandleMovement(Vector3 moveDir) 
     {
-        transform.position += moveDir * currentSpeed * Time.deltaTime;
+        transform.position += new Vector3(moveDir.x, 0f, moveDir.z) * currentSpeed * Time.deltaTime;
 
         if (isMoving && moveDir != Vector3.zero)
         {
