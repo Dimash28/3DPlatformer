@@ -696,6 +696,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 200501374}
+  - component: {fileID: 200501375}
   m_Layer: 8
   m_Name: GroundCheckPoint
   m_TagString: Untagged
@@ -712,12 +713,33 @@ Transform:
   m_GameObject: {fileID: 200501373}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.001, z: 0}
+  m_LocalPosition: {x: 0, y: -0.046, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 980922261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &200501375
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200501373}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.08, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &241704930
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,7 +2163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 201520018653583806, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.885829
+      value: 1.935828
       objectReference: {fileID: 0}
     - target: {fileID: 201520018653583806, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2187,11 +2209,41 @@ PrefabInstance:
       propertyPath: detectionRange
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5613776487489253226, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
+      propertyPath: playerLoseTime
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
+--- !u!1 &452109002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6173720142940155710, guid: 4d7175f1ab9a29c4596f88048bab5673, type: 3}
+  m_PrefabInstance: {fileID: 495128808258019576}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &452109004
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452109002}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.08, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &452541853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2446,7 +2498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 201520018653583806, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.885829
+      value: 1.935828
       objectReference: {fileID: 0}
     - target: {fileID: 201520018653583806, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2491,6 +2543,10 @@ PrefabInstance:
     - target: {fileID: 5613776487489253226, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
       propertyPath: detectionRange
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613776487489253226, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
+      propertyPath: playerLoseTime
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8350,10 +8406,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7588781069117709321, guid: 4d7175f1ab9a29c4596f88048bab5673, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.041
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6173720142940155710, guid: 4d7175f1ab9a29c4596f88048bab5673, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 452109004}
   m_SourcePrefab: {fileID: 100100000, guid: 4d7175f1ab9a29c4596f88048bab5673, type: 3}
 --- !u!1001 &1323194506996990820
 PrefabInstance:
@@ -8529,7 +8592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 201520018653583806, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.91
+      value: 1.935828
       objectReference: {fileID: 0}
     - target: {fileID: 201520018653583806, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8574,6 +8637,14 @@ PrefabInstance:
     - target: {fileID: 5613776487489253226, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
       propertyPath: detectionRange
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613776487489253226, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
+      propertyPath: playerLoseTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613776487489253226, guid: 67202fe9f716a4d4ca9884093f7256e9, type: 3}
+      propertyPath: playerLayerMask.m_Bits
+      value: 256
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

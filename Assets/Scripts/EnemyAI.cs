@@ -64,7 +64,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void HandleChasing() 
+    private void HandleChasing()
     {
         if (!IsPlayerInRange())
         {
@@ -75,10 +75,13 @@ public class EnemyAI : MonoBehaviour
             }
 
             playerLoseTimer += Time.deltaTime;
-            if (playerLoseTimer >= playerLoseTime) 
+
+            HandleMovementToTarget(player.transform.position);
+
+            if (playerLoseTimer >= playerLoseTime)
             {
-                currentState = EnemyState.Roaming;
                 playerLoseTimer = 0f;
+                currentState = EnemyState.Roaming;
                 return;
             }
         }
@@ -86,23 +89,20 @@ public class EnemyAI : MonoBehaviour
         {
             if (IsGroundAhead())
             {
-                Vector3 moveDir = (player.transform.position - transform.position).normalized;
-                HandleMovement(moveDir);
+                HandleMovementToTarget(player.transform.position);
             }
             else
             {
                 currentState = EnemyState.Roaming;
                 currentSpeed = 0f;
                 PickRandomPointToGo();
-                HandleMovementToRandomPoint();
+                HandleMovementToTarget(randomPoint);
             }
         }
     }
 
     private void HandleRoaming()
     {
-        AdjustSpeedAcceleration();
-
         float distance = Vector3.Distance(transform.position, randomPoint);
 
         if (IsPlayerInRange())
@@ -129,13 +129,13 @@ public class EnemyAI : MonoBehaviour
             {
                 if (IsGroundAhead())
                 {
-                    HandleMovementToRandomPoint();
+                    HandleMovementToTarget(randomPoint);
                 }
                 else
                 {
                     currentSpeed = 0f;
                     PickRandomPointToGo();
-                    HandleMovementToRandomPoint();
+                    HandleMovementToTarget(randomPoint);
                 }
                 waitingTimer = 0f;
             }
@@ -154,14 +154,16 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void HandleMovementToRandomPoint() 
+    private void HandleMovementToTarget(Vector3 target)
     {
-        Vector3 moveDir = (randomPoint - transform.position).normalized;
+        AdjustSpeedAcceleration();
 
-        HandleMovement(moveDir);
+        Vector3 moveDir = (target - transform.position).normalized;
+
+        ApplyMovementAndRotation(moveDir);
     }
 
-    private void HandleMovement(Vector3 moveDir) 
+    private void ApplyMovementAndRotation(Vector3 moveDir) 
     {
         transform.position += new Vector3(moveDir.x, 0f, moveDir.z) * currentSpeed * Time.deltaTime;
 
@@ -191,8 +193,6 @@ public class EnemyAI : MonoBehaviour
         Vector3 halfExtents = groundCheck.size * 0.5f;
 
         Collider[] hits = Physics.OverlapBox(center, halfExtents, groundCheck.transform.rotation, groundLayer);
-
-        Debug.Log("Ground Ahead: " + (hits.Length > 0));
 
         return hits.Length > 0;
     }

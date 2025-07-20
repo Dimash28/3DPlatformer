@@ -153,6 +153,8 @@ public class Player : MonoBehaviour
         ApplyMovement();
 
         TriggerAnimationEvents();
+
+        Debug.Log(characterController.isGrounded);
     }
 
     private void HandleGravity()
