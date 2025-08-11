@@ -41,8 +41,21 @@ public class PlayerFormManager : MonoBehaviour
         }
     }
 
+    private void SyncHP() 
+    {
+        if (!isInSphereForm) 
+        {
+            playerSphereForm.SetHPAmount(player.GetHPAmount());
+        }
+        else
+        {
+            player.SetHPAmount(playerSphereForm.GetHPAmount());
+        }
+    }
+
     private void GameInput_OnFormChanged(object sender, System.EventArgs e)
     {
+        SyncHP();
         SyncPosition();
         ChangeForm();
     }
@@ -51,7 +64,7 @@ public class PlayerFormManager : MonoBehaviour
     {
         if (player.GetSkillAmount() > 0)
         {
-            if (isInSphereForm && !CanChangeToNormalForm())
+            if (isInSphereForm && !CanChangeToNormalForm() || IsHPAmountZero())
             {
                 return;
             }
@@ -95,5 +108,10 @@ public class PlayerFormManager : MonoBehaviour
         Vector3 top = bottom + Vector3.up * (playerHeight - radius * 2f);
 
         return !Physics.CheckCapsule(bottom, top, radius, LayerMask.GetMask("Ground"));
+    }
+
+    private bool IsHPAmountZero() 
+    {
+        return player.GetHPAmount() <= 0 || playerSphereForm.GetHPAmount() <= 0;
     }
 }

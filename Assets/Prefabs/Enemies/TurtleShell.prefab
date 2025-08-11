@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &640448755447129322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5577718165330378686}
+  - component: {fileID: 7114047798723140604}
+  m_Layer: 7
+  m_Name: WallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5577718165330378686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640448755447129322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.513, z: 0.995}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9213131567752321199}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7114047798723140604
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640448755447129322}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.89, y: 0.35, z: 0.35}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4234550257384823135
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +976,7 @@ Transform:
   - {fileID: 9212911866150659159}
   - {fileID: 9206874361832515461}
   - {fileID: 587136459849922230}
+  - {fileID: 5577718165330378686}
   m_Father: {fileID: 201520018653583806}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &9124221242032206635
@@ -983,6 +1037,7 @@ MonoBehaviour:
   player: {fileID: 2100965505395949907, guid: 4d7175f1ab9a29c4596f88048bab5673, type: 3}
   originPoint: {fileID: 201520018653583806}
   groundCheck: {fileID: 3796953788648925233}
+  wallCheck: {fileID: 7114047798723140604}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -996,6 +1051,7 @@ MonoBehaviour:
   attackCooldown: 0
   damage: 0
   waitingTime: 1
+  playerLoseTime: 0
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 256

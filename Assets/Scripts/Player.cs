@@ -545,6 +545,10 @@ public class Player : MonoBehaviour
         Debug.Log("Died");
         gameObject.SetActive(false);
     }
+    public void SetHPAmount(int hpAmount) 
+    {
+        healthPoint = hpAmount;
+    }
 
     public int GetHPAmount() 
     {

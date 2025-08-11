@@ -6,6 +6,7 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField] private Transform originPoint;
     [SerializeField] private BoxCollider groundCheck;
+    [SerializeField] private BoxCollider wallCheck;
     [SerializeField] private LayerMask groundLayer;
 
     [SerializeField] private float health;
@@ -25,6 +26,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private LayerMask playerLayerMask;
 
     private Vector3 randomPoint;
+    private Vector3 lastKnownPlayerPosition;
+
+    private Rigidbody rigidbody;
 
     private bool isWaiting = false;
     private bool isMoving;
@@ -42,14 +46,20 @@ public class EnemyAI : MonoBehaviour
         Dead
     }
 
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
+
     private void Start()
     {
+        currentSpeed = maxSpeed;
         currentState = EnemyState.Roaming;
         PickRandomPointToGo();
         isMoving = true;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         switch (currentState)
         {
@@ -66,30 +76,12 @@ public class EnemyAI : MonoBehaviour
 
     private void HandleChasing()
     {
-        if (!IsPlayerInRange())
+        if (IsPlayerInRange())
         {
-            if (!IsGroundAhead())
+            if (IsCollisionAhead(groundCheck))
             {
-                currentState = EnemyState.Roaming;
-                return;
-            }
-
-            playerLoseTimer += Time.deltaTime;
-
-            HandleMovementToTarget(player.transform.position);
-
-            if (playerLoseTimer >= playerLoseTime)
-            {
-                playerLoseTimer = 0f;
-                currentState = EnemyState.Roaming;
-                return;
-            }
-        }
-        else
-        {
-            if (IsGroundAhead())
-            {
-                HandleMovementToTarget(player.transform.position);
+                lastKnownPlayerPosition = player.transform.position;
+                HandleMovementToTarget(lastKnownPlayerPosition);
             }
             else
             {
@@ -97,6 +89,24 @@ public class EnemyAI : MonoBehaviour
                 currentSpeed = 0f;
                 PickRandomPointToGo();
                 HandleMovementToTarget(randomPoint);
+            }
+        }
+        else
+        {
+            if (!IsCollisionAhead(groundCheck))
+            {
+                currentState = EnemyState.Roaming;
+                return;
+            }
+
+            playerLoseTimer += Time.deltaTime;
+            HandleMovementToTarget(lastKnownPlayerPosition);
+
+            if (playerLoseTimer >= playerLoseTime)
+            {
+                playerLoseTimer = 0f;
+                currentState = EnemyState.Roaming;
+                return;
             }
         }
     }
@@ -127,7 +137,7 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                if (IsGroundAhead())
+                if (IsCollisionAhead(groundCheck) && !IsCollisionAhead(wallCheck))
                 {
                     HandleMovementToTarget(randomPoint);
                 }
@@ -142,21 +152,21 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void AdjustSpeedAcceleration()
-    {
-        if (isMoving)
-        {
-            currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, speedAcceleration * Time.deltaTime);
-        }
-        else
-        {
-            currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, speedAcceleration * Time.deltaTime);
-        }
-    }
+    //private void AdjustSpeedAcceleration()
+    //{
+    //    if (isMoving)
+    //    {
+    //        currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, speedAcceleration * Time.deltaTime);
+    //    }
+    //    else
+    //    {
+    //        currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, speedAcceleration * Time.deltaTime);
+    //    }
+    //}
 
     private void HandleMovementToTarget(Vector3 target)
     {
-        AdjustSpeedAcceleration();
+        //AdjustSpeedAcceleration();
 
         Vector3 moveDir = (target - transform.position).normalized;
 
@@ -165,9 +175,10 @@ public class EnemyAI : MonoBehaviour
 
     private void ApplyMovementAndRotation(Vector3 moveDir) 
     {
+        currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, speedAcceleration * Time.fixedDeltaTime);
         transform.position += new Vector3(moveDir.x, 0f, moveDir.z) * currentSpeed * Time.deltaTime;
 
-        if (isMoving && moveDir != Vector3.zero)
+        if (moveDir != Vector3.zero)
         {
             Vector3 positionToLookAt = new Vector3(moveDir.x, 0f, moveDir.z);
             Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
@@ -183,16 +194,16 @@ public class EnemyAI : MonoBehaviour
 
     private bool IsPlayerInRange()
     {
-        Collider[] players = Physics.OverlapSphere(transform.position, detectionRange, playerLayerMask);
-        return players.Length > 0;
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+        return distance <= detectionRange;
     }
 
-    private bool IsGroundAhead() 
+    private bool IsCollisionAhead(BoxCollider collider) 
     {
-        Vector3 center = groundCheck.transform.position + groundCheck.center;
-        Vector3 halfExtents = groundCheck.size * 0.5f;
+        Vector3 center = collider.transform.position + collider.center;
+        Vector3 halfExtents = collider.size * 0.5f;
 
-        Collider[] hits = Physics.OverlapBox(center, halfExtents, groundCheck.transform.rotation, groundLayer);
+        Collider[] hits = Physics.OverlapBox(center, halfExtents, collider.transform.rotation, groundLayer);
 
         return hits.Length > 0;
     }
